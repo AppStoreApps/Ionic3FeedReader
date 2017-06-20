@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {FeedProvider } from '../../providers/feed/feed';
 
-/**
- * Generated class for the StoriesPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-stories',
@@ -14,11 +9,22 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class StoriesPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  topic: String;
+  stories: Array<any>;
+
+  constructor(public feedProvider: FeedProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StoriesPage');
+    this.topic = 'edition';
+    this.getStories();
   }
 
+  getStories() {
+    this.feedProvider.getStories(this.topic).subscribe(res => {
+      console.log(res.items);
+      this.stories = res.items;
+      
+    })
+  }
 }
